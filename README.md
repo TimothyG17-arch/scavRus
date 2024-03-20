@@ -8,19 +8,18 @@ This READ ME document serves as a starting place to begin you Scrum project for 
 
 ### Useful Links to Documentation:
 
-[Code Sctructure Doc](https://github.com/adverseengineer/ScavengeRUs/blob/sprint4/Documentation/Code%20Structure%20Documentation.docx) - Documentation on How BucHunt Code is Structured.
+[Code Sctructure Doc](https://github.com/TimothyG17-arch/scavRus/blob/master/Documentation/Code%20Structure%20Documentation.docx) - Documentation on How BucHunt Code is Structured.
 
-[Database Documentation](https://github.com/adverseengineer/ScavengeRUs/blob/sprint4/Documentation/Database%20Documentation.docx)
+[Database Documentation](https://github.com/TimothyG17-arch/scavRus/blob/master/Documentation/Database%20Documentation.docx)
 
 [Email System Documentation](https://github.com/TimothyG17-arch/scavRus/blob/master/Documentation/Email%20System%20Documentation.docx) - Documentation on the Email notifications.
 
 [Google Doc Backlog](https://github.com/TimothyG17-arch/scavRus/blob/master/Scrum%20Team.pdf) - Includes Backlog for previous semester.
 
-[Scrum Task Management via Trello](https://trello.com/invite/b/Ams1YaTs/ATTI9ddc7b9ef33c1773008326bcd53c57a25407114D/scrum-diddly-umptious) - Trello Task Management
+[Scrum Task Management via JIRA (NO LINK)
 
-[SE1 Project Team Discord](https://discord.gg/r9hTJWPMNA) - Previous Semesters Group Discord
+[SE1 Project Team Discord](https://discord.gg/znbJTxTJ) - Previous Semesters Group Discord
 
-[Overall Discord for SE1 Projects - Past Semesters also](https://discord.gg/RchHgFK2S2) - All SE1 Semesters Discord
 
 ### BucHunt Admin Access for Tests:
  UN: waltonca@etsu.edu
