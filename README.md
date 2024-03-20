@@ -12,7 +12,7 @@ This READ ME document serves as a starting place to begin you Scrum project for 
 
 [Database Documentation](https://github.com/adverseengineer/ScavengeRUs/blob/sprint4/Documentation/Database%20Documentation.docx)
 
-[Email System Documentation](https://github.com/adverseengineer/ScavengeRUs/blob/sprint4/Documentation/Email%20System%20Documentation.docx) - Documentation on the Email notifications.
+[Email System Documentation](https://github.com/TimothyG17-arch/scavRus/blob/master/Documentation/Email%20System%20Documentation.docx) - Documentation on the Email notifications.
 
 [Google Doc Backlog](https://github.com/TimothyG17-arch/scavRus/blob/master/Scrum%20Team.pdf) - Includes Backlog for previous semester.
 
