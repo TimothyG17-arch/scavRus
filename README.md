@@ -14,7 +14,7 @@ This READ ME document serves as a starting place to begin you Scrum project for 
 
 [Email System Documentation](https://github.com/adverseengineer/ScavengeRUs/blob/sprint4/Documentation/Email%20System%20Documentation.docx) - Documentation on the Email notifications.
 
-[Google Doc Backlog](https://github.com/adverseengineer/ScavengeRUs/blob/sprint4/Documentation/Scrum%20Team.pdf) - Includes Backlog for previous semester.
+[Google Doc Backlog](https://github.com/TimothyG17-arch/scavRus/blob/master/Scrum%20Team.pdf) - Includes Backlog for previous semester.
 
 [Scrum Task Management via Trello](https://trello.com/invite/b/Ams1YaTs/ATTI9ddc7b9ef33c1773008326bcd53c57a25407114D/scrum-diddly-umptious) - Trello Task Management
 
