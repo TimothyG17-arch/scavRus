@@ -379,6 +379,8 @@ namespace ScavengeRUs.Controllers
         /// <param name="id"></param>
         /// <param name="huntid"></param>
         /// <returns></returns>
+        /// TODO: Fix the View(task)
+        /// This is a comment
         public async Task<IActionResult> RemoveTasks(int id, int huntid)
         {
             var hunt = await _huntRepo.ReadAsync(huntid);
