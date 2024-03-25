@@ -132,6 +132,7 @@ namespace ScavengeRUs.Controllers
             return View(hunt);
            
         }
+        ///TODO:this makes a to-do list
         /// <summary>
         /// www.localhost.com/hunt/details/{huntId} This is the details view of a hunt
         /// </summary>
