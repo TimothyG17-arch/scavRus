@@ -415,7 +415,7 @@ namespace ScavengeRUs.Controllers
             var hunt = await _huntRepo.ReadAsync(id);
             return View(hunt);
         }
-
+        ///New branch
         /// <summary>
         /// update operation for hunts
         /// </summary>
