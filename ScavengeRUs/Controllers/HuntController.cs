@@ -384,10 +384,10 @@ namespace ScavengeRUs.Controllers
         /// This is a comment. With an addition!
         public async Task<IActionResult> RemoveTasks(int id, int huntid)
         {
-            var hunt = await _huntRepo.ReadAsync(huntid);
-            ViewData["Hunt"] = hunt;
-            var task = await _huntRepo.ReadLocation(id);
-            return View(task);
+         var hunt = await _huntRepo.ReadAsync(huntid);
+         ViewData["Hunt"] = hunt;
+         var task = await _huntRepo.ReadLocation(id);
+           return View(task);
         }
 
 

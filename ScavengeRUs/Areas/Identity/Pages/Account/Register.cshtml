@@ -39,6 +39,14 @@
                 <label asp-for="Input.Password"></label>
                 <span asp-validation-for="Input.Password" class="text-danger"></span>
             </div>
+            <!--added in directly can be added to be event driven later on-->
+            <div>
+                <ul>
+                    <li element-id="51">Passwords must have at least one number or symbol</li>
+                    <li element-id="50">Passwords must have at least one lowercase letter</li>
+                    <li element-id="49">Passwords must have at least one uppercase letter</li>
+                </ul>
+            </div>
             <div class="form-floating">
                 <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" />
                 <label asp-for="Input.ConfirmPassword"></label>
