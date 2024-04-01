@@ -1,0 +1,113 @@
+SQLite Database (Current setup)
+The database is a SQLite database.
+It is stored as a file within the repository and thus using a git ignore is necessary to avoid merge conflicts between collaborators.
+The database is a bit of an issue for source control because it is updated individually for each user due to it being a file.
+
+The tables are based on the models in the code and when changes are made to the model a migration is made to update the database.
+(in package manager console run "add-migration {migration-name-here}" "update-database"
+
+An effective way to browse the database is DB browser for SQLite.
+https://sqlitebrowser.org/dl/
+
+An overhaul of how the database works will probably be needed in the future. One idea we had was to use data base scripts to populate the database each time the application was run. These scripts would be stored in the github repository. This would ensure everyone would have access to the same data. However, the way the database migrations work with it being linked to the code would probably make it tricky and we did not have time to put much effort into it. There is probably a better method than this that integrates more with the Microsoft system.
+
+Kinser said that he would have preferred it if the earlier groups just used text files because the database is not really that complex. However, the solution already is built around the SQLite database, so it will probably be a good amount of effort to completely redo it. 
+
+Source control can be your best friend or your biggest obstacle. We want you to be able to hit the ground running, and minimize the issues that you will face with source control. We recommend that you follow these rules for managing your own git changes:
+When you start the project, immediately branch off of main and create a development branch. Don't touch main until your final release at the end of the project when you merge development back into main.
+When you start a new sprint, create a branch off of development for it and name it something like "sprint1" or "sprint_1".
+When you set out to complete a task in a sprint, create a branch for that task off of whichever sprint branch that task belongs to on your backlog. Name it as descriptively as you can, i.e. "UserPhNumberValidationFix" or "AccessCodeNullRefFix".
+When that task is completed and your code is tested, commit your changes and create a pull request to have those changes merged into the sprint branch. Get as many eyes on that code as possible and get two or more team members to approve your changes. After that, merge the pull request. Remember to delete the task branch after it is merged
+At the end of every sprint, merge the sprint branch into development. You can either delete the sprint branch after, or keep it dangling for records-keeping purposes. It is a matter of preference.
+The database file causes issues with source control because any time you run the program and use any action that modifies the database, git will detect those changes and try to track them. The database file is a binary file (as opposed to plaintext) and cannot be compared to an old version line-by line (diffed) however. This causes merge conflicts when you try to merge your changes to any code and there happen to also be changes to your local copy of the database. It is for this reason that we added a few lines to our gitignore to exclude the database from source control.
+Possible fixes for this: Kinser suggested that we continue ignoring the database, but also make a few scripts that do the following:
+If it does not already exist, create the database file.
+If it does exist, drop all tables.
+Populate it with the data that you want it to have. It will have this data for everyone.
+Track these scripts with source control.
+These scripts will be run upon every git pull. This accomplishes two things:
+The database will no longer cause merge conflicts because it is not tracked by git
+The contents of the database will effectively be plaintext, and therefore diffable.
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+Remote Server
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+The following was contained in a text file “Server_Documentationupdated.txt”. It is outdated but useful for using a remote server. 
+
+IP : 151.141.90.160
+
+Check status:
+    `Sudo systemctl status BucHunt.service`
+Force stop
+    `Sudo systemctl stop BucHunt.service`
+Start
+    `Sudo systemctl start BucHunt.service`
+Restart
+    `Sudo systemctl restart BucHunt.service`
+
+To update the server app to the main repository:
+
+1. Transfer folder from publishing the project to the server.
+  This can be done various ways. 
+  I used a FTP cleint to do this.
+  You must also manually transfer the database to the publishing folder
+  Make sure the database (and the publishing folder the database is in) has read and write permissions
+	
+2. SSH into FALL22-4250-940-1.etsu.edu
+  server: http://151.141.90.160/
+  username: stuadmin
+  pass: tUpme35$
+  
+3. Restart the service
+  `Sudo systemctl restart BucHunt.service`
+
+4. Verify its running correctly
+  `Sudo systemctl status BucHunt.service`
+
+5. Verify the database connection works by trying to log in
+
+
+The proxy:
+
+  This redirects incoming http requests on port 80 to the service running on port 5000 of the localhost (our web app)
+
+    `sudo nano /etc/apache2/sites-available/BucHunt.service`
+    replaced contents with:
+	<VirtualHost *:80>
+		ProxyPreserveHost On
+		ProxyPass / http://127.0.0.1:5000/
+		ProxyPassReverse / http://127.0.0.1:5000/
+		ErrorLog ${APACHE_LOG_DIR}BucHunt.log
+	</VirtualHost>
+
+Enabling the proxy:
+    `sudo a2enmod proxy`
+    `sudo a2enmod proxy_http`
+    `sudo a2enmod proxy_html`
+    `sudo systemctl reload/restart apache2.service`
+
+System service
+
+    This allows to run the web app as a service in the background
+
+    `sudo nano /etc/systemd/system/BucHunt.service`
+
+
+	[Unit]
+	Description=BucHunt Web App
+
+	[Service]
+	WorkingDirectory=/home/stuadmin/BucHunt/ScavengeRUs/Release/
+	ExecStart=/home/stuadmin/.dotnet/dotnet /home/stuadmin/BucHunt/ScavengeRUs/Release/ScavengeR>
+	Restart=always
+	# Restart service after 10 seconds if the dotnet service crashes:
+	RestartSec=10
+	KillSignal=SIGINT
+	SyslogIdentifier=dotnet-example
+	User=www-data
+	Environment=ASPNETCORE_ENVIRONMENT=Production
+	Environment=DOTNET_PRINT_TELEMETRY_MESSAGE=false
+
+	[Install]
+	WantedBy=multi-user.target
