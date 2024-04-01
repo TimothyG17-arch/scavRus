@@ -6,14 +6,40 @@
     ViewData["Title"] = "View Players of hunt";
 }
 @{
-    var timeRemaining = (hunt!.EndDate - DateTime.Now).ToString();
-    if (TimeSpan.Parse(timeRemaining).Seconds < 0)
+   /* 
+    * THIS IS THE ORIGINAL COUNTDOWN TIMER it has issue with inaccurate count down due to being rounded up to the miliseconds
+    * var timeRemaining = (hunt!.EndDate - DateTime.Now).ToString();
+    * if (TimeSpan.Parse(timeRemaining).Seconds < 0)
+    * {
+    *    timeRemaining = "Ended";
+    * }
+    * else
+    * {
+    *    timeRemaining = timeRemaining.Substring(0, timeRemaining.LastIndexOf("."));
+    * } 
+    * */
+
+    /* I'm adding 0.5 seconds to the time remaining before converting it to a 
+     * string to ensure proper rounding up of seconds.
+    */
+    var timeRemaining = (hunt!.EndDate - DateTime.Now);
+    if (timeRemaining.TotalSeconds < 0)
     {
-        timeRemaining = "Ended";
+        timeRemaining = TimeSpan.Zero;
     }
     else
     {
-        timeRemaining = timeRemaining.Substring(0, timeRemaining.LastIndexOf("."));
+        timeRemaining = timeRemaining.Add(TimeSpan.FromSeconds(0.5)); // Round up seconds
+    }
+
+    /* Then, I'm checking if the total seconds are equal to zero to determine if the hunt has ended, and if so,
+     * setting the formattedTimeRemaining string to "Ended".
+     */
+    var formattedTimeRemaining = timeRemaining.ToString(@"dd\.hh\:mm\:ss"); // Format time remaining
+
+    if (timeRemaining.TotalSeconds == 0)
+    {
+        formattedTimeRemaining = "Ended";
     }
 }
  @*Task Modal*@
