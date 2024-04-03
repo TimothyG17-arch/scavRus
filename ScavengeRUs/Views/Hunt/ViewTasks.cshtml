@@ -7,40 +7,51 @@
 }
 @{
    /* 
-    * THIS IS THE ORIGINAL COUNTDOWN TIMER it has issue with inaccurate count down due to being rounded up to the miliseconds
-    * var timeRemaining = (hunt!.EndDate - DateTime.Now).ToString();
-    * if (TimeSpan.Parse(timeRemaining).Seconds < 0)
-    * {
-    *    timeRemaining = "Ended";
-    * }
-    * else
-    * {
-    *    timeRemaining = timeRemaining.Substring(0, timeRemaining.LastIndexOf("."));
-    * } 
-    * */
+   * THIS IS THE ORIGINAL COUNTDOWN TIMER
+   * there's a potential issue with the code. If the milliseconds are less than 500 milliseconds, 
+   * it won't round up the seconds, which could result in inaccurate time representation.
+   * var timeRemaining = (hunt!.EndDate - DateTime.Now).ToString();
+   * if (TimeSpan.Parse(timeRemaining).Seconds < 0)
+   * {
+   *    timeRemaining = "Ended";
+   * }
+   * else
+   * {
+   *    timeRemaining = timeRemaining.Substring(0, timeRemaining.LastIndexOf("."));
+   * }
+   * */
 
-    /* I'm adding 0.5 seconds to the time remaining before converting it to a 
-     * string to ensure proper rounding up of seconds.
-    */
-    var timeRemaining = (hunt!.EndDate - DateTime.Now);
-    if (timeRemaining.TotalSeconds < 0)
-    {
-        timeRemaining = TimeSpan.Zero;
-    }
-    else
-    {
-        timeRemaining = timeRemaining.Add(TimeSpan.FromSeconds(0.5)); // Round up seconds
-    }
+// Updated Countdown Timer
+   // Calculate the time remaining until the hunt's end date 
+   TimeSpan timeRemaining = hunt!.EndDate - DateTime.Now;
 
-    /* Then, I'm checking if the total seconds are equal to zero to determine if the hunt has ended, and if so,
-     * setting the formattedTimeRemaining string to "Ended".
-     */
-    var formattedTimeRemaining = timeRemaining.ToString(@"dd\.hh\:mm\:ss"); // Format time remaining
+   // Check if the hunt has already ended
+   if (timeRemaining.TotalSeconds < 0)
+   {
+       // If the hunt has ended, set the time remaining to zero
+       timeRemaining = TimeSpan.Zero;
+   }
+   else
+   {
+       // If the hunt is still ongoing, round up to the next second
+       double totalSeconds = timeRemaining.TotalSeconds;       // Get the total number of seconds
+       double roundedSeconds = Math.Ceiling(totalSeconds);     // Round up to the next second
+       timeRemaining = TimeSpan.FromSeconds(roundedSeconds);   // Convert rounded seconds back to TimeSpan
+   }
 
-    if (timeRemaining.TotalSeconds == 0)
-    {
-        formattedTimeRemaining = "Ended";
-    }
+   // Format the time remaining for display
+   string formattedTimeRemaining;
+   if (timeRemaining == TimeSpan.Zero)
+   {
+       // If the time remaining is zero, indicating the hunt has ended
+       formattedTimeRemaining = "Ended";
+   }
+   else
+   {
+       // If the hunt is still ongoing, format the time remaining
+       string formattedTime = timeRemaining.ToString(@"dd\.hh\:mm\:ss\.F");   // Format with milliseconds
+       formattedTimeRemaining = formattedTime.TrimEnd('0').TrimEnd('.');      // Remove trailing zeros and decimal separator
+   }
 }
  @*Task Modal*@
 <div class="modal fade" id="createTaskModal" tabindex="-1" role="dialog" aria-hidden="true">
