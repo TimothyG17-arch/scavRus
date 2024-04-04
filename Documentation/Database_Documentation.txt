@@ -1,3 +1,4 @@
+Database_Documentation Rev.Date_4/3/24 Trent Allen
 SQLite Database (Current setup)
 The database is a SQLite database.
 It is stored as a file within the repository and thus using a git ignore is necessary to avoid merge conflicts between collaborators.
