@@ -95,8 +95,9 @@ namespace ScavengeRUs.Areas.Identity.Pages.Account
             [Required]
             [Display(Name = "Phone Number")]
             [Phone]
-            // Regular expression for a 10-digit number
-            [RegularExpression(@"^[0-9]{10}$", ErrorMessage = "Invalid Phone Number. A 10-digit number is required.")]
+            // Regular expression for a 10-digit number.
+            [RegularExpression(@"^[0-9]{10}$", ErrorMessage = "Invalid Phone Number")]
+
             public string PhoneNumber { get; set; } = string.Empty;
            
             [Required]
@@ -131,7 +132,15 @@ namespace ScavengeRUs.Areas.Identity.Pages.Account
                 var user = CreateUser();
                 user.FirstName = Input.FirstName;
                 user.LastName = Input.LastName;
-                user.PhoneNumber = Input.PhoneNumber;
+
+                // Reload the page if the phone number contains spaces.
+                var trimmedPhone = Input.PhoneNumber.Replace(" ", "");
+                if(trimmedPhone.Length != 10)
+                {
+                    return Page();
+                }
+
+                user.PhoneNumber = trimmedPhone;
                 user.Carrier = Input.Carrier;
                 
                 var roleCheckPlayer = await _roleManager.RoleExistsAsync("Player");
