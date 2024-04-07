@@ -29,6 +29,12 @@
                 <label asp-for="Input.PhoneNumber"></label>
                 <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
             </div>
+            <!--added in directly can be added to be event driven later on-->
+            @* <div>
+                <ul>
+                    <li element-id="51">Phone number must be 10 digits</li>
+                </ul>
+            </div> *@
             <div class="form-floating">
                 <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" />
                 <label asp-for="Input.Email"></label>
