@@ -132,24 +132,6 @@ namespace ScavengeRUs.Controllers
             return View(hunt);
            
         }
-        ///TODO:this makes a to-do list
-        /// <summary>
-        /// www.localhost.com/hunt/details/{huntId} This is the details view of a hunt
-        /// </summary>
-        /// <param name="huntId"></param>
-        /// <returns></returns>
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Details([Bind(Prefix ="Id")]int huntId)
-        {
-            if (huntId == 0)
-                return RedirectToAction("Index");
-
-            var hunt = await _huntRepo.ReadAsync(huntId);
-            if (hunt == null)
-                return RedirectToAction("Index");
-
-            return View(hunt);
-        }
         /// <summary>
         /// www.localhost.com/hunt/delete/{huntId} This is the get method for deleting a hunt
         /// </summary>
@@ -371,23 +353,6 @@ namespace ScavengeRUs.Controllers
             ViewData["Hunt"] = hunt;
             await _huntRepo.AddLocation(id, huntid);
             return RedirectToAction("ManageTasks", new {id=huntid});
-        }
-
-
-        /// <summary>
-        /// This is the get method for removing a task from a hunt. This is executed when clicking "Remove" from the Hunt/ViewTasks screen
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="huntid"></param>
-        /// <returns></returns>
-        /// TODO: Fix the View(task)
-        /// This is a comment. With an addition!
-        public async Task<IActionResult> RemoveTasks(int id, int huntid)
-        {
-            var hunt = await _huntRepo.ReadAsync(huntid);
-            ViewData["Hunt"] = hunt;
-            var task = await _huntRepo.ReadLocation(id);
-            return View(task);
         }
 
 
