@@ -233,10 +233,15 @@ namespace ScavengeRUs.Controllers
             {
                 newUser.AccessCode = new AccessCode()
                 {
-                    Hunt = hunt,                        //Setting foriegn key
-                    Code = $"{newUser.PhoneNumber}/{hunt.HuntName!.Replace(" ", string.Empty)}",            //This is the access code generation
+                    Hunt = hunt,                        //Setting foreign key
+
+                    // ORIGINAL Code which uses user's phone number and hunt name as the access code.
+                    // Code = $"{newUser.PhoneNumber}/{hunt.HuntName!.Replace(" ", string.Empty)}",
+
+                    // Code only using user's phone number as it fits the criteria of being unique.
+                    Code = $"{newUser.PhoneNumber!.Replace(" ", string.Empty)}",         //This is the access code generation
                 };
-                newUser.AccessCode.Users.Add(newUser);  //Setting foriegn key
+                newUser.AccessCode.Users.Add(newUser);  //Setting foreign key
             }
             else
             {
