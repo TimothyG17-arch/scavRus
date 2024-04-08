@@ -18,10 +18,29 @@
                     <label asp-for="Input.Email" class="form-label"></label>
                     <span asp-validation-for="Input.Email" class="text-danger"></span>
                 </div>
+                <!--script toggling the visibility for the password input. It shows up private when first entered and once the button is clicked the password is visible-->
+                <script>
+                    function togglePasswordVisibility() {
+                    const passwordInput = document.getElementById('passwordInput');
+                    const toggleButton = document.getElementById('togglePasswordVisibility');
+                    if (passwordInput.type === "text") {
+                        passwordInput.type = "password";
+                        toggleButton.textContent = "Hide Password";
+                    } else {
+                        passwordInput.type = "text";
+                        toggleButton.textContent = "Show Password";
+                        }
+                     }
+                     </script>
+                <!--This div class was already present and is the password field with an altered id.-->
                 <div class="form-floating">
-                    <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" />
+                    <input asp-for="Input.Password" id = "passwordInput" class="form-control" autocomplete="current-password" aria-required="true" />
                     <label asp-for="Input.Password" class="form-label"></label>
                     <span asp-validation-for="Input.Password" class="text-danger"></span>
+                </div>
+                <!-- Check box using the css from the form-check-input in the css bootstrap. makes the click box and calls the javascript for toggling the password visibility.-->
+                <div class = "checkbox">
+                    <label for = "clicker"><input class ="form-check-input" type = "checkbox" id="clicker" onclick="togglePasswordVisibility()"> Show password </label>
                 </div>
                 <div>
                     <div class="checkbox">
