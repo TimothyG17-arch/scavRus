@@ -21,12 +21,10 @@ public class Functions
 		{ Carrier.BoostMobile, "sms.myboostmobile.com" }, // untested
 		{ Carrier.Charter, "vtext.com" },
 		{ Carrier.Cricket, "sms.cricketwireless.net" }, // untested
-		{ Carrier.Sprint, "messaging.sprintpcs.net" }, // untested
 		{ Carrier.StraightTalk, "vtext.com" }, // uses verizon's url, contrary to what documentation says
 		{ Carrier.TMobile, "tmomail.net" }, //This might need to be fixed for the batch file.
 		{ Carrier.TracFone, "txt.att.net" },
 		{ Carrier.Verizon, "vtext.com" },
-		{ Carrier.VirginMobile, "vmobl.com" } // untested
 	};
 
 	/// <summary>
