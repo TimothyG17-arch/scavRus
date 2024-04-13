@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ScavengeRUs.Models.Entities;
 using ScavengeRUs.Services;
@@ -125,6 +125,12 @@ namespace ScavengeRUs.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (await IsOverlap(hunt))
+                {
+                    ModelState.AddModelError("","Another hunt already exists during this time frame. ");
+                    return View(hunt);
+                }
+                
                 hunt.CreationDate = DateTime.Now;
                 await _huntRepo.CreateAsync(hunt);
                 return RedirectToAction("Index");
@@ -373,6 +379,31 @@ namespace ScavengeRUs.Controllers
             return RedirectToAction("ManageTasks", "Hunt", new {id=huntid});
         }
 
+        /// <summary>
+        /// Method to identify if a hunt already exists inside timeframe.  
+        /// </summary>
+        /// <param name="newHunt"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        private async Task<bool> IsOverlap(Hunt newHunt, int? id = null)
+        {
+            var hunts = await _huntRepo.ReadAllAsync();
+            
+            //excludes hunt trying to update if its already in database
+            if (id != null)
+            {
+                hunts = hunts.Where(h => h.Id != id).ToList();
+            }
+            foreach (var exHunt in hunts)
+            {
+                if (newHunt.StartDate < exHunt.EndDate && newHunt.EndDate > exHunt.StartDate)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
 
         /// <summary>
         /// updates all hunts
@@ -395,17 +426,23 @@ namespace ScavengeRUs.Controllers
         [Authorize(Roles = "Admin")]
         [HttpPost]
         [EndDateDateValidation(ErrorMessage = "End date must be equal to or after the start date.")]    // does not work as of now
-        public IActionResult Update(int id, Hunt hunt)
+        public async Task<IActionResult> Update(int id, Hunt hunt)
         {
             if (hunt.EndDate < hunt.StartDate)
                 ModelState.AddModelError("EndDate", "End date must be equal to or after the start date.");
+            
 
             if (ModelState.IsValid)
             {
+                if (await IsOverlap(hunt, id))
+                {
+                    ModelState.AddModelError("","Another hunt already exists during this time frame. ");
+                    return View(hunt);
+                }
+                
                 _huntRepo.Update(id, hunt);
                 return RedirectToAction("Index");
             }
-
             return View(hunt);
         }
     }
