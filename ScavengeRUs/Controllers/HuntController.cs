@@ -241,11 +241,14 @@ namespace ScavengeRUs.Controllers
                 {
                     Hunt = hunt,                        //Setting foreign key
 
-                    // ORIGINAL Code which uses user's phone number and hunt name as the access code.
-                    // Code = $"{newUser.PhoneNumber}/{hunt.HuntName!.Replace(" ", string.Empty)}",
+                 // ORIGINAL CODE: Code which uses user's phone number and hunt name as the access code.
+                 // For user's standpoint this is very long.It needs to be simple yet unique to
+                 // user and the specific hunt.
+                 // Code = $"{newUser.PhoneNumber}/{hunt.HuntName!.Replace(" ", string.Empty)}",
 
-                    // Code only using user's phone number as it fits the criteria of being unique.
-                    Code = $"{newUser.PhoneNumber!.Replace(" ", string.Empty)}",         //This is the access code generation
+                 // NEW CODE:Code using user's phone number and hunt id shorter and
+                 // fits the criteria of being unique for the user and for the specific hunt itself.
+                 Code = $"{newUser.PhoneNumber}-{hunt.Id}"        //This is the access code generation
                 };
                 newUser.AccessCode.Users.Add(newUser);  //Setting foreign key
             }
