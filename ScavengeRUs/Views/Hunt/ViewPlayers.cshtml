@@ -64,6 +64,10 @@
                     @Html.DisplayFor(model => item.AccessCode.Code)
                 </td>
                 <td>
+                    <!-- Creates link in the web page for view players  -->
+                    @Html.ActionLink("Send Email", "SendEmail", new { email = item.Email })
+                </td>
+                <td>
                     @Html.ActionLink("Revoke Access", "RemoveUser", new { id=item.UserName, huntId=hunt.Id })
                 </td>
             </tr>

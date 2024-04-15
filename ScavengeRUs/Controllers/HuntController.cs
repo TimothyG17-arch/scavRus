@@ -27,8 +27,21 @@ namespace ScavengeRUs.Controllers
             _userRepo = userRepo;
             _huntRepo = HuntRepo;
         }
-        
-        
+        /// <summary>
+        /// This removes the null error that was occuring while trying to access the email page.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
+        public IActionResult SendEmail(string email)
+        {
+            var model = new SendEmailViewModel();
+            if (!string.IsNullOrEmpty(email))
+            {
+                model.Email = email;
+            }
+            return View(model);
+        }
+
         /// <summary>
         /// www.localhost.com/hunt/index Returns a list of all hunts
         /// </summary>
@@ -439,6 +452,21 @@ namespace ScavengeRUs.Controllers
                 return RedirectToAction("Index");
             }
             return View(hunt);
+        }
+        /// <summary>
+        /// Takes the text from the users input and applies it to the existing function of sending emails
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> SendEmail(SendEmailViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                await Functions.SendEmail(model.Email, model.Subject, model.Body);
+                return RedirectToAction("Index"); // can be changed in the future to redirect to a failure or success page.
+            }
+            return View(model);
         }
     }
 }
