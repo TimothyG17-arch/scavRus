@@ -17,7 +17,8 @@
     <li class="nav-item">
             @if (User.IsInRole("Admin"))
             {
-                <a class="nav-link text-dark" asp-controller="User" asp-action="Manage" title="Manage">Admin Portal</a>
+                @* <a class="nav-link text-dark" asp-controller="User" asp-action="Manage" title="Manage">Admin Portal</a> *@
+                <a class="nav-link text-dark" href="/Hunt" title="Hunt">Admin Portal</a>
             }
     </li>
     <!--
