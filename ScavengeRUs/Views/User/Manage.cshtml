@@ -46,43 +46,44 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(model => item.Email)
-            </td>
-            <td>
-                    @Html.DisplayFor(model => item.FirstName) @Html.DisplayFor(model => item.LastName)
-            </td>
-            <td>
-                    @Html.DisplayFor(model => item.PhoneNumber)
-            </td>
-            <td>   
-                @foreach (var role in item.Roles)
-                {
-                    @Html.DisplayFor(model => @role)                      
-                }
-                
+    <tr>
+        <td>
+            @Html.DisplayFor(model => item.Email)
+        </td>
+        <td>
+            @Html.DisplayFor(model => item.FirstName) @Html.DisplayFor(model => item.LastName)
+        </td>
+        <td>
+            @Html.DisplayFor(model => item.PhoneNumber)
+        </td>
+        <td>
+            @foreach (var role in item.Roles)
+            {
+                @Html.DisplayFor(model => @role)
+            }
 
-            </td>
-            <td>
-                @if (item.Hunt != null)
-                {
-                    @Html.DisplayFor(model => item.Hunt.HuntName)
-                }
-                    
-            </td>
-            <td>
-                @if (item.Carrier != null)
-                {
-                    @Html.DisplayFor(model => item.Carrier)
-                }
-            </td>
-            <td>
-                    @Html.ActionLink("Edit", "Edit", new { id=item.UserName }) |
-                    @Html.ActionLink("Details", "Details", new { id=item.UserName }) |
-                    @Html.ActionLink("Delete", "Delete", new { id=item.UserName })
-            </td>
-        </tr>
+
+        </td>
+        <td>
+            @if (item.Hunt != null)
+            {
+                @Html.DisplayFor(model => item.Hunt.HuntName)
+            }
+
+        </td>
+        <td>
+            @if (item.Carrier != null)
+            {
+                @Html.DisplayFor(model => item.Carrier)
+            }
+        </td>
+        <td>
+            @Html.ActionLink("Send Email", "SendEmail", new { email = item.Email }) |
+            @Html.ActionLink("Edit", "Edit", new { id = item.UserName }) |
+            @Html.ActionLink("Details", "Details", new { id = item.UserName }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.UserName })
+        </td>
+    </tr>
 }
     </tbody>
 </table>
