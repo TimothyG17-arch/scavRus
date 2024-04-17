@@ -94,8 +94,8 @@
                 @Html.DisplayFor(modelItem => item.HuntLocations.Count)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Update", new { id=item.Id }) |
-                @Html.ActionLink("View Hunt", "ViewTasks", new {  id=item.Id  }) |
+                @Html.ActionLink("Edit Details", "Update", new { id=item.Id }) |
+                @Html.ActionLink("Manage Hunt", "ViewTasks", new {  id=item.Id  }) |
                 @Html.ActionLink("Delete Hunt", "Delete", new {  id=item.Id  })
             </td>
         </tr>
