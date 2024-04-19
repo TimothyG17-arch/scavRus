@@ -79,6 +79,8 @@ namespace ScavengeRUs.Controllers
 
         /// <summary>
         /// This method will be called when the admin submits the newly created location
+        /// Consider changing this according to any changes you will be applying to Create.cshtml,
+        /// especially if you want to change the create task functionality.
         /// </summary>
         /// <param name="location"></param>
         /// <returns></returns>
