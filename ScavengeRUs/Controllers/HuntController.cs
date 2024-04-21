@@ -466,6 +466,11 @@ namespace ScavengeRUs.Controllers
             return View(hunt);
         }
 
+        /// <summary>
+        /// Sets end date to now and sends an email to all players
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> EndHunt(int id)
         {
