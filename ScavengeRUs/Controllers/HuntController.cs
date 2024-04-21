@@ -27,8 +27,8 @@ namespace ScavengeRUs.Controllers
             _userRepo = userRepo;
             _huntRepo = HuntRepo;
         }
-
-
+        
+        
         /// <summary>
         /// www.localhost.com/hunt/index Returns a list of all hunts
         /// </summary>
@@ -49,7 +49,7 @@ namespace ScavengeRUs.Controllers
 
             //Sorting functionality for columns on view
             //There is probably a better way to refactor this sorting functionality, this method was shown in the Microsoft Docs
-            switch (sortOrder)
+            switch(sortOrder)
             {
                 case "creation_date":
                     hunts = hunts.OrderBy(h => h.CreationDate).ToList();
@@ -71,13 +71,10 @@ namespace ScavengeRUs.Controllers
                     break;
                 case "status":
                     //Sorts by whether the hunt has ended or not
-                    hunts = hunts.OrderBy(h => TimeSpan.Parse((h.EndDate - DateTime.Now).ToString()).Seconds < 0)
-                        .ToList();
+                    hunts = hunts.OrderBy(h => TimeSpan.Parse((h.EndDate - DateTime.Now).ToString()).Seconds < 0).ToList();
                     break;
                 case "status_desc":
-                    hunts = hunts
-                        .OrderByDescending(h => TimeSpan.Parse((h.EndDate - DateTime.Now).ToString()).Seconds < 0)
-                        .ToList();
+                    hunts = hunts.OrderByDescending(h => TimeSpan.Parse((h.EndDate - DateTime.Now).ToString()).Seconds < 0).ToList();
                     break;
                 case "end_date":
                     hunts = hunts.OrderBy(h => h.EndDate).ToList();
@@ -93,7 +90,7 @@ namespace ScavengeRUs.Controllers
                     break;
                 case "tasks":
                     hunts = hunts.OrderBy(h => h.HuntLocations.Count).ToList();
-                    break;
+                    break;                
                 case "tasks_desc":
                     hunts = hunts.OrderByDescending(h => h.HuntLocations.Count).ToList();
                     break;
@@ -104,8 +101,8 @@ namespace ScavengeRUs.Controllers
 
             return View(hunts);
         }
-
-
+        
+        
         /// <summary>
         /// www.localhost.com/hunt/create This is the get method for creating a hunt
         /// </summary>
@@ -128,28 +125,38 @@ namespace ScavengeRUs.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (await IsOverlap(hunt))
-                {
-                    ModelState.AddModelError("", "Another hunt already exists during this time frame. ");
-                    return View(hunt);
-                }
-
                 hunt.CreationDate = DateTime.Now;
                 await _huntRepo.CreateAsync(hunt);
                 return RedirectToAction("Index");
             }
+            return View(hunt);
+           
+        }
+        ///TODO:this makes a to-do list
+        /// <summary>
+        /// www.localhost.com/hunt/details/{huntId} This is the details view of a hunt
+        /// </summary>
+        /// <param name="huntId"></param>
+        /// <returns></returns>
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Details([Bind(Prefix ="Id")]int huntId)
+        {
+            if (huntId == 0)
+                return RedirectToAction("Index");
+
+            var hunt = await _huntRepo.ReadAsync(huntId);
+            if (hunt == null)
+                return RedirectToAction("Index");
 
             return View(hunt);
-
         }
-
         /// <summary>
         /// www.localhost.com/hunt/delete/{huntId} This is the get method for deleting a hunt
         /// </summary>
         /// <param name="huntId"></param>
         /// <returns></returns>
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Delete([Bind(Prefix = "Id")] int huntId)
+        public async Task<IActionResult> Delete([Bind(Prefix = "Id")]int huntId)
         {
             if (huntId == 0)
                 return RedirectToAction("Index");
@@ -186,28 +193,28 @@ namespace ScavengeRUs.Controllers
         {
             var hunt = await _huntRepo.ReadHuntWithRelatedData(huntId);
             ViewData["Hunt"] = hunt;
-            if (hunt == null)
+            if(hunt == null)
                 return RedirectToAction("Index");
-
+            
             return View(hunt.Players);
         }
-
-
+        
+        
         /// <summary>
         /// www.localhost.com/hunt/addplayertohunt{huntid} Get method for adding a player to a hunt. 
         /// </summary>
         /// <param name="huntId"></param>
         /// <returns></returns>
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> AddPlayerToHunt([Bind(Prefix = "Id")] int huntId)
+        public async Task<IActionResult> AddPlayerToHunt([Bind(Prefix ="Id")]int huntId)
         {
             var hunt = await _huntRepo.ReadAsync(huntId);
             ViewData["Hunt"] = hunt;
             return View();
-
+            
         }
-
-
+        
+        
         /// <summary>
         /// www.localhost.com/hunt/addplayertohunt{huntid} Post method for the form submission. This creates a user and assigns the access code for the hunt. 
         /// </summary>
@@ -216,14 +223,13 @@ namespace ScavengeRUs.Controllers
         /// <returns></returns>
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task<IActionResult> AddPlayerToHunt([Bind(Prefix = "Id")] int huntId, ApplicationUser user)
+        public async Task<IActionResult> AddPlayerToHunt([Bind(Prefix = "Id")] int huntId ,ApplicationUser user)
         {
 
             if (huntId == 0)
             {
                 RedirectToAction("Index");
             }
-
             var hunt = await _huntRepo.ReadAsync(huntId);
             var existingUser = await _userRepo.ReadAsync(user.Email);
             var newUser = new ApplicationUser();
@@ -241,24 +247,14 @@ namespace ScavengeRUs.Controllers
                 newUser = existingUser;
                 newUser.AccessCode = user.AccessCode;
             }
-
-            if (newUser.AccessCode!.Code ==
-                null) //If the admin didn't specify an access code (If we need to, I have the field readonly currently)
+            if (newUser.AccessCode!.Code == null)       //If the admin didn't specify an access code (If we need to, I have the field readonly currently)
             {
                 newUser.AccessCode = new AccessCode()
                 {
-                    Hunt = hunt, //Setting foreign key
-
-                    // ORIGINAL CODE: Code which uses user's phone number and hunt name as the access code.
-                    // For user's standpoint this is very long.It needs to be simple yet unique to
-                    // user and the specific hunt.
-                    // Code = $"{newUser.PhoneNumber}/{hunt.HuntName!.Replace(" ", string.Empty)}",
-
-                    // NEW CODE:Code using user's phone number and hunt id shorter and
-                    // fits the criteria of being unique for the user and for the specific hunt itself.
-                    Code = $"{newUser.PhoneNumber}-{hunt.Id}" //This is the access code generation
+                    Hunt = hunt,                        //Setting foriegn key
+                    Code = $"{newUser.PhoneNumber}/{hunt.HuntName!.Replace(" ", string.Empty)}",            //This is the access code generation
                 };
-                newUser.AccessCode.Users.Add(newUser); //Setting foreign key
+                newUser.AccessCode.Users.Add(newUser);  //Setting foriegn key
             }
             else
             {
@@ -269,24 +265,21 @@ namespace ScavengeRUs.Controllers
                 };
                 newUser.AccessCode.Users.Add(newUser);
             }
-
+            
             //Set default value for email body
-            string emailBody =
-                $"<div>Hi {newUser.FirstName} {newUser.LastName} welcome to the ETSU Scavenger Hunt game! " +
-                $"To get started please go to the BucHunt website and login with the access code: {newUser.AccessCode.Code}</div>";
-
-            if (hunt.InvitationBodyText is not null)
+            string emailBody = $"<div>Hi {newUser.FirstName} {newUser.LastName} welcome to the ETSU Scavenger Hunt game! " +
+                   $"To get started please go to the BucHunt website and login with the access code: {newUser.AccessCode.Code}</div>";
+            
+            if(hunt.InvitationBodyText is not null)
             {
                 var userStr = hunt.InvitationBodyText.Replace("%user", $"{newUser.FirstName} {newUser.LastName}");
                 emailBody = userStr.Replace("%code", $"{newUser.AccessCode.Code}");
             }
-
-            await _huntRepo.AddUserToHunt(huntId,
-                newUser); //This methods adds the user to the database and adds the database relationship to a hunt.
+            await _huntRepo.AddUserToHunt(huntId, newUser); //This methods adds the user to the database and adds the database relationship to a hunt.
 
             string subject = hunt.InvitationText ?? "Welcome to the ETSU Scavenger Hunt!";
 
-            await Functions.SendEmail(newUser.Email, subject, emailBody);
+			await Functions.SendEmail(newUser.Email, subject, emailBody);
 
             //Nick Sells, 11/29/2023: get this value from the user, instead of just hardcoding in verizon
             //we have hard coded in verizon because thats what we all have
@@ -303,15 +296,14 @@ namespace ScavengeRUs.Controllers
         /// <param name="huntid"></param>
         /// <returns></returns>
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> RemoveUser([Bind(Prefix = "Id")] string username,
-            [Bind(Prefix = "huntId")] int huntid)
+        public async Task<IActionResult> RemoveUser([Bind(Prefix ="Id")]string username, [Bind(Prefix ="huntId")]int huntid)
         {
             ViewData["Hunt"] = huntid;
             var user = await _userRepo.ReadAsync(username);
             return View(user);
         }
-
-
+        
+        
         /// <summary>
         /// www.localhost.com/hunt/removeuser/{username}/{huntId} This is the post method for removing a user from a hunt.
         /// </summary>
@@ -333,18 +325,18 @@ namespace ScavengeRUs.Controllers
         /// <param name="huntid"></param>
         /// <returns></returns>
         [Authorize(Roles = "Player, Admin")]
-        public async Task<IActionResult> ViewTasks([Bind(Prefix = "Id")] int huntid)
+        public async Task<IActionResult> ViewTasks([Bind(Prefix ="Id")]int huntid)
         {
             var currentUser = await _userRepo.ReadAsync(User.Identity?.Name!);
             var hunt = await _huntRepo.ReadHuntWithRelatedData(huntid);
             ViewData["Hunt"] = hunt;
             ViewData["CurrentUser"] = currentUser;
             if (hunt == null)
-                return RedirectToAction("Index");
+                return RedirectToAction("Index");            
 
             var tasks = await _huntRepo.GetLocations(hunt.HuntLocations);
             return View(tasks.OrderBy(o => currentUser?.TasksCompleted?.Contains(o)));
-
+            
         }
 
         /// this is to test jira
@@ -354,7 +346,7 @@ namespace ScavengeRUs.Controllers
         /// <param name="huntid"></param>
         /// <returns></returns>
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> ManageTasks([Bind(Prefix = "Id")] int huntid)
+        public async Task<IActionResult> ManageTasks([Bind(Prefix ="Id")]int huntid)
         {
             var hunt = await _huntRepo.ReadHuntWithRelatedData(huntid);
             //var existingLocations = await _huntRepo.GetLocations(hunt.HuntLocations);
@@ -378,7 +370,24 @@ namespace ScavengeRUs.Controllers
             var hunt = await _huntRepo.ReadHuntWithRelatedData(huntid);
             ViewData["Hunt"] = hunt;
             await _huntRepo.AddLocation(id, huntid);
-            return RedirectToAction("ManageTasks", new { id = huntid });
+            return RedirectToAction("ManageTasks", new {id=huntid});
+        }
+
+
+        /// <summary>
+        /// This is the get method for removing a task from a hunt. This is executed when clicking "Remove" from the Hunt/ViewTasks screen
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="huntid"></param>
+        /// <returns></returns>
+        /// TODO: Fix the View(task)
+        /// This is a comment. With an addition!
+        public async Task<IActionResult> RemoveTasks(int id, int huntid)
+        {
+            var hunt = await _huntRepo.ReadAsync(huntid);
+            ViewData["Hunt"] = hunt;
+            var task = await _huntRepo.ReadLocation(id);
+            return View(task);
         }
 
 
@@ -391,34 +400,7 @@ namespace ScavengeRUs.Controllers
         public async Task<IActionResult> RemoveTask(int id, int huntid)
         {
             await _huntRepo.RemoveTaskFromHunt(id, huntid);
-            return RedirectToAction("ManageTasks", "Hunt", new { id = huntid });
-        }
-
-        /// <summary>
-        /// Method to identify if a hunt already exists inside timeframe.  
-        /// </summary>
-        /// <param name="newHunt"></param>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        private async Task<bool> IsOverlap(Hunt newHunt, int? id = null)
-        {
-            var hunts = await _huntRepo.ReadAllAsync();
-
-            //excludes hunt trying to update if its already in database
-            if (id != null)
-            {
-                hunts = hunts.Where(h => h.Id != id).ToList();
-            }
-
-            foreach (var exHunt in hunts)
-            {
-                if (newHunt.StartDate < exHunt.EndDate && newHunt.EndDate > exHunt.StartDate)
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return RedirectToAction("ManageTasks", "Hunt", new {id=huntid});
         }
 
 
@@ -433,7 +415,6 @@ namespace ScavengeRUs.Controllers
             var hunt = await _huntRepo.ReadAsync(id);
             return View(hunt);
         }
-
         ///New branch
         /// <summary>
         /// update operation for hunts
@@ -443,29 +424,21 @@ namespace ScavengeRUs.Controllers
         /// <returns></returns>
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        [EndDateDateValidation(ErrorMessage =
-            "End date must be equal to or after the start date.")] // does not work as of now
-        public async Task<IActionResult> Update(int id, Hunt hunt)
+        [EndDateDateValidation(ErrorMessage = "End date must be equal to or after the start date.")]    // does not work as of now
+        public IActionResult Update(int id, Hunt hunt)
         {
             if (hunt.EndDate < hunt.StartDate)
                 ModelState.AddModelError("EndDate", "End date must be equal to or after the start date.");
 
-
             if (ModelState.IsValid)
             {
-                if (await IsOverlap(hunt, id))
-                {
-                    ModelState.AddModelError("", "Another hunt already exists during this time frame. ");
-                    return View(hunt);
-                }
-
                 _huntRepo.Update(id, hunt);
                 return RedirectToAction("Index");
             }
 
             return View(hunt);
         }
-
+        
         /// <summary>
         /// Sets end date to now and sends an email to all players
         /// </summary>
