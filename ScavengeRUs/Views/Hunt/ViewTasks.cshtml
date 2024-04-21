@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ScavengeRUs.Models.Entities.Location>
+@model IEnumerable<ScavengeRUs.Models.Entities.Location>
 @using Microsoft.AspNetCore.Identity
 @{
     var hunt = (Hunt?)ViewData["Hunt"]; // Variable set in HuntController to track the current hunt in view
@@ -83,8 +83,9 @@
             <a asp-action="ViewPlayers" asp-route-Id="@hunt.Id" class="btn btn-danger">View Players</a>
 
             <a asp-action="Index" asp-route-Id="@hunt.Id" class="btn btn-danger">View all hunts</a>
+
+            <a asp-action="EndHunt" asp-route-Id="@hunt.Id" class="btn btn-danger">End Hunt</a>
             <span style="color:Red;">*** Only admins can see/access the red buttons</span>
-            <hr />
         }
     </p>
     <h4>Introduction Text</h4>
