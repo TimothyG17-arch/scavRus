@@ -476,7 +476,6 @@ namespace ScavengeRUs.Controllers
             }
             return View(model);
         }
-        
         /// <summary>
         /// Sets end date to now and sends an email to all players
         /// </summary>
@@ -502,6 +501,5 @@ namespace ScavengeRUs.Controllers
 
             return RedirectToAction("Index");
         }
-    }
     }
 }
