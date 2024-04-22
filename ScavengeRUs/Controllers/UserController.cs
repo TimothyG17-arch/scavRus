@@ -179,5 +179,19 @@ namespace ScavengeRUs.Controllers
             // Redirect to the Index action of the UsersController
             return RedirectToAction("Manage");
         }
+        /// <summary>
+        /// Copy and pasted from the hunt controller 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public async Task<IActionResult> SendEmail(SendEmailViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                await Functions.SendEmail(model.Email, model.Subject, model.Body);
+                return RedirectToAction("Manage"); // can be changed in the future to redirect to a failure or success page.
+            }
+            return View(model);
+        }
     }
 }

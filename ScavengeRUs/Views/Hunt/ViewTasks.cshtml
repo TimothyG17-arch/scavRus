@@ -6,15 +6,52 @@
     ViewData["Title"] = "View Players of hunt";
 }
 @{
-    var timeRemaining = (hunt!.EndDate - DateTime.Now).ToString();
-    if (TimeSpan.Parse(timeRemaining).Seconds < 0)
-    {
-        timeRemaining = "Ended";
-    }
-    else
-    {
-        timeRemaining = timeRemaining.Substring(0, timeRemaining.LastIndexOf("."));
-    }
+   /* 
+   * THIS IS THE ORIGINAL COUNTDOWN TIMER
+   * there's a potential issue with the code. If the milliseconds are less than 500 milliseconds, 
+   * it won't round up the seconds, which could result in inaccurate time representation.
+   * var timeRemaining = (hunt!.EndDate - DateTime.Now).ToString();
+   * if (TimeSpan.Parse(timeRemaining).Seconds < 0)
+   * {
+   *    timeRemaining = "Ended";
+   * }
+   * else
+   * {
+   *    timeRemaining = timeRemaining.Substring(0, timeRemaining.LastIndexOf("."));
+   * }
+   * */
+
+// Updated Countdown Timer
+   // Calculate the time remaining until the hunt's end date 
+   TimeSpan timeRemaining = hunt!.EndDate - DateTime.Now;
+
+   // Check if the hunt has already ended
+   if (timeRemaining.TotalSeconds < 0)
+   {
+       // If the hunt has ended, set the time remaining to zero
+       timeRemaining = TimeSpan.Zero;
+   }
+   else
+   {
+       // If the hunt is still ongoing, round up to the next second
+       double totalSeconds = timeRemaining.TotalSeconds;       // Get the total number of seconds
+       double roundedSeconds = Math.Ceiling(totalSeconds);     // Round up to the next second
+       timeRemaining = TimeSpan.FromSeconds(roundedSeconds);   // Convert rounded seconds back to TimeSpan
+   }
+
+   // Format the time remaining for display
+   string formattedTimeRemaining;
+   if (timeRemaining == TimeSpan.Zero)
+   {
+       // If the time remaining is zero, indicating the hunt has ended
+       formattedTimeRemaining = "Ended";
+   }
+   else
+   {
+       // If the hunt is still ongoing, format the time remaining
+       string formattedTime = timeRemaining.ToString(@"dd\.hh\:mm\:ss\.F");   // Format with milliseconds
+       formattedTimeRemaining = formattedTime.TrimEnd('0').TrimEnd('.');      // Remove trailing zeros and decimal separator
+   }
 }
  @*Task Modal*@
 <div class="modal fade" id="createTaskModal" tabindex="-1" role="dialog" aria-hidden="true">
