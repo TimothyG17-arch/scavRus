@@ -8,7 +8,7 @@ This READ ME document serves as a starting place to begin you Scrum project for 
 
 ### Useful Links to Documentation:
 
-[Code Sctructure Doc](https://github.com/TimothyG17-arch/scavRus/blob/master/Documentation/Code%20Structure%20Documentation.docx) - Documentation on How BucHunt Code is Structured.
+[Code Structure Doc](https://github.com/TimothyG17-arch/scavRus/blob/master/Documentation/Code%20Structure%20Documentation.docx) - Documentation on How BucHunt Code is Structured.
 
 [Database Documentation](https://github.com/TimothyG17-arch/scavRus/blob/master/Documentation/Database%20Documentation.docx)
 
