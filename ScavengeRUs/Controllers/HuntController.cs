@@ -476,5 +476,31 @@ namespace ScavengeRUs.Controllers
             }
             return View(model);
         }
+
+        /// <summary>
+        /// Sets end date to now and sends an email to all players
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> EndHunt(int id)
+        {
+            var hunt = await _huntRepo.ReadHuntWithRelatedData(id);
+            
+            hunt.EndDate=DateTime.Now;
+            _huntRepo.Update(id, hunt);
+
+            foreach (var player in hunt.Players)
+            {
+                string tasks = "";
+                foreach (var task in player.TasksCompleted)
+                {
+                    tasks += task.Task + "\\n";
+                }
+                await Functions.SendEmail(player.Email, "Hunt "+hunt.HuntName+" Has ended", tasks);
+            }
+
+            return RedirectToAction("Index");
+        }
     }
 }
