@@ -20,7 +20,7 @@ This READ ME document serves as a starting place to begin you Scrum project for 
 
 [SE1 Discord](https://discord.gg/y99dnXxZRd) - Previous Semesters Group Discord
 
-[SE2 Discord (https://discord.gg/GZkDCqdrCu)]
+[SE2 Discord](https://discord.gg/GZkDCqdrCu)
 
 
 ### BucHunt Admin Access for Tests:
