@@ -1,7 +1,7 @@
 # BucHunt
 This READ ME document serves as a starting place to begin you Scrum project for SE 1.
   - Below are Documents relating to different parts of the project that will help guide you on how they work.
-  - Google Doc link includes PDF to the previous semester project notes, changes, and general information ( This is for the semester before us).
+  - Bcklog is the Jira Tasks both done and unfinished located in the PDF of the attached link. (Use Trello)
   - Backlog is in the Backlog File in the repository contains a PDF for ease of access and a word for editibility.
   - The two discord links are to see our discussions and to reach out to the past semesters members. One Discord link is for the SE2 Discord to get in touch with US and the other is the SE1 discord     which includes our groups channel.
 
