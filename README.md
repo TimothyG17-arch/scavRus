@@ -20,6 +20,8 @@ This READ ME document serves as a starting place to begin you Scrum project for 
 
 [Backlog](https://github.com/TimothyG17-arch/scavRus/blob/master/Documentation/Jira-PDF.pdf) - Includes Backlog for previous semester.
 
+[Jira](https://team-uhokkolwbids.atlassian.net/jira/software/projects/KAN/boards/1)-Linked Jira
+
 [SE1 Discord](https://discord.gg/y99dnXxZRd) - Previous Semesters Group Discord
 
 [SE2 Discord](https://discord.gg/GZkDCqdrCu)
