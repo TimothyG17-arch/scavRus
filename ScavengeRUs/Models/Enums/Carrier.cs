@@ -9,11 +9,9 @@
 		BoostMobile,
 		Charter,
 		Cricket,
-		Sprint,
 		StraightTalk,
 		TMobile,
 		TracFone,
 		Verizon,
-		VirginMobile
 	}
 }

@@ -11,11 +11,75 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Place" class="control-label"></label>
-                <input asp-for="Place" class="form-control" />
-                <span asp-validation-for="Place" class="text-danger"></span>
-            </div>
+           <div class="form-group">
+               <label asp-for="Place" class="control-label">Place</label>
+               <select id="placeSelect" asp-for="Place" class="form-control">
+               @* This dropdown list is static but setup so it can be 
+               updated into a dynamic dropdown list importing .txt files for 
+               places if needed. Below is the addPlace() that can be used to make this
+               dropdon list dynamic.Please consider the LocationController.cs method that 
+               will be called when the admin submits the newly created location when changing this*@
+                   <option value="">Select a place or type below</option>
+                   <option value="Alumni House">Alumni House</option>
+                   <option value="Ball Hall">Ball Hall</option>
+                   <option value="Brinkley Center">Brinkley Center</option>
+                   <option value="Brooks Gym">Brooks Gym</option>
+                   <option value="Brown Hall">Brown Hall</option>
+                   <option value="Burgin Dossett Hall">Burgin Dossett Hall</option>
+                   <option value="Burleson Hall">Burleson Hall</option>
+                   <option value="Carter Hall">Carter Hall</option>
+                   <option value="Centennial Hall">Centennial Hall</option>
+                   <option value="D.P Culp Student Center">D.P Culp Student Center</option>
+                   <option value="Dossett Residence Hall">Dossett Residence Hall</option>
+                   <option value="Gilbreath Hall">Gilbreath Hall</option>
+                   <option value="Governors Hall">Governors Hall</option>
+                   <option value="Hutcheson Hall">Hutcheson Hall</option>
+                   <option value="Lamb Hall">Lamb Hall</option>
+                   <option value="Lucille Clement Hall">Lucille Clement Hall</option>
+                   <option value="Mathes Hall">Mathes Hall</option>
+                   <option value="Millenium Center">Millenium Center</option>
+                   <option value="Nicks Hall">Nicks Hall</option>
+                   <option value="Power Hall">Power Hall</option>
+                   <option value="The Quad">The Quad</option>
+                   <option value="Rogers Stout Hall">Rogers Stout Hall</option>
+                   <option value="Sam Wilson Hall">Sam Wilson Hall</option>
+                   <option value="Sherrod Library">Sherrod Library</option>
+                   <option value="Warf Pickle Hall">Warf Pickle Hall</option>
+                   <option value="West Hall">West Hall</option>
+                   <option value="Wilson-Wallis Hall">Wilson-Wallis Hall</option>
+                   <option value="Yoakley Hall">Yoakley Hall</option>
+               </select>
+               <span asp-validation-for="Place" class="text-danger"></span>
+           </div>
+           <div class="form-group">
+               <input type="text" id="newPlace" placeholder="Type your place here" />
+               <button type="button" onclick="addPlace()">Add Place</button>
+           </div>
+           @* This provides basic functionality to add options to a dropdown list. 
+               For a production environment, you might want to consider additional 
+               validations and interactions with the server to store these options 
+               persistently. *@
+           <script>
+               function addPlace() {
+                   var newPlaceInput = document.getElementById('newPlace');
+                   var newPlace = newPlaceInput.value.trim();
+                   if (newPlace) {
+                       var select = document.getElementById('placeSelect');
+                       if (select) {
+                           var option = document.createElement("option");
+                           option.value = newPlace;
+                           option.text = newPlace;
+                           option.selected = true; // Automatically select the newly added option
+                           select.appendChild(option);
+                           newPlaceInput.value = ""; // Clear the input after adding
+                       } else {
+                           console.log('Dropdown not found');
+                       }
+                   } else {
+                       console.log('No new place entered');
+                   }
+               }
+           </script>
             <div class="form-group">
                 <label asp-for="Task" class="control-label"></label>
                 <textarea asp-for="Task" class="form-control" ></textarea>
