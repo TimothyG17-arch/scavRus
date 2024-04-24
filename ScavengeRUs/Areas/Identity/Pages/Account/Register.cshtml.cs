@@ -102,8 +102,9 @@ namespace ScavengeRUs.Areas.Identity.Pages.Account
              * (123) 456-7890 
              * 123 456 7890 
              * 123.456.7890
+             * 1234567890
              */
-            [RegularExpression(@"^(\+0?1\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$", ErrorMessage = "Invalid Phone Number")]
+            [RegularExpression(@"^\s*(\+0?1\s)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}\s*$", ErrorMessage = "Invalid Phone Number")]
 
             public string PhoneNumber { get; set; } = string.Empty;
            
