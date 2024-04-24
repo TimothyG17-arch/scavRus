@@ -1,0 +1,15 @@
+(I was uncertain as to where this should go, so I'm making a little file that's easy to dispose of when it's no longer necessary)
+Currently, a user can only be assigned to a single hunt at one time. If an admin tries
+to add a user to a hunt while they were already added to another, then they get removed
+from the hunt they were previously assigned to. 
+
+After some looking, I've noticed that in ApplicationUser.cs in the models/entities folders 
+(where the user is defined), the AccessCode value should be a list, in theory allowing multiple to be stored
+to access multiple hunts. However, in HuntController in the task AddPlayer on line 227, when adding a user to a hunt
+it essentially keeps making a new list rather than adding to it, so it keeps "deleting"
+the old access code the user had. So it's not just accessing the "newest" hunt, the
+user just gets removed from the old one when you add them to another hunt. 
+
+This is what I can gather from looking at the code. It works enough in its current state, but if anyone 
+decides to try and change/fix that functionality, then they should definitely take a look at what I had mentioned
+before.
