@@ -1,5 +1,7 @@
 # BucHunt
 This READ ME document serves as a starting place to begin you Scrum project for SE 1.
+  - Do the scrum process better than us.
+  - We focused on the admin portion of the ScavRUs Requirments.
   - Below are Documents relating to different parts of the project that will help guide you on how they work.
   - Backlog is the Jira Tasks both done and unfinished located in the PDF of the attached link. (Use Trello)
   - Backlog is in the Backlog File in the repository contains a PDF for ease of access and a word for editibility.
