@@ -14,11 +14,14 @@ This READ ME document serves as a starting place to begin you Scrum project for 
 
 [Email System Documentation](https://github.com/TimothyG17-arch/scavRus/blob/master/Documentation/Email%20System%20Documentation.docx) - Documentation on the Email notifications.
 
+[PO User Stories](https://docs.google.com/document/d/1DvCC_wFkaHF44z4q5pKJKReXsbVXjvLyFkz2QdGYuno/edit) - Useful for the PO
+
 [Backlog](https://github.com/TimothyG17-arch/scavRus/blob/master/Documentation/Jira-PDF.pdf) - Includes Backlog for previous semester.
 
 [SE1 Discord](https://discord.gg/y99dnXxZRd) - Previous Semesters Group Discord
 
 [SE2 Discord](https://discord.gg/GZkDCqdrCu)
+
 
 
 ### BucHunt Admin Access for Tests:
